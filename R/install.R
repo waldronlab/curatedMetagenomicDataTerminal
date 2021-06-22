@@ -1,5 +1,12 @@
 #' Install the CLI
 #'
+#' Install the CLI along the default path or a custom path.
+#'
+#' If not installing along a `bin` path, you must add the path to $PATH. For
+#' example, `export PATH=/path/to/cli:$PATH`.
+#'
+#' @param path A string representing the installation path
+#'
 #' @return
 #' @export
 #'
@@ -15,4 +22,5 @@ install <- function(path = "/usr/local/bin/curatedMetagenomicData") {
         paste("ln -s", source_file, target_file)
 
     system(system_link)
+
 }
