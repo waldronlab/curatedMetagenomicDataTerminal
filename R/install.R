@@ -22,5 +22,4 @@ install <- function(path = "/usr/local/bin/curatedMetagenomicData") {
         paste("ln -s", source_file, target_file)
 
     system(system_link)
-
 }
