@@ -7,7 +7,7 @@ You must have R installed before you follow the instructions below.
 ## Command-line installation
 
 ```
-Rscript -e "utils::install.packages('BiocManager')"
+Rscript -e "utils::install.packages('BiocManager', repos = 'http://cran.us.r-project.org')"
 Rscript -e "BiocManager::install('waldronlab/curatedMetagenomicDataCLI')"
 Rscript -e "curatedMetagenomicDataCLI::install()"
 ```
