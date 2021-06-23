@@ -11,6 +11,8 @@
 #' @export
 #'
 #' @examples
+#' curatedMetagenomicDataCLI::install()
+#' curatedMetagenomicDataCLI::install(".")
 install <- function(path = "/usr/local/bin/curatedMetagenomicData") {
     source_file <-
         system.file("exec/curatedMetagenomicData", package = "curatedMetagenomicDataCLI")

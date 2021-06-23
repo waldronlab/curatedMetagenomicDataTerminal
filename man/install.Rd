@@ -17,5 +17,9 @@ Install the CLI along the default path or a custom path.
 }
 \details{
 If not installing along a \code{bin} path, you must add the path to $PATH. For
-example, \verb{export PATH=/path/to/my/cli:$PATH}.
+example, \verb{export PATH=/path/to/cli:$PATH}.
+}
+\examples{
+curatedMetagenomicDataCLI::install()
+curatedMetagenomicDataCLI::install(".")
 }
