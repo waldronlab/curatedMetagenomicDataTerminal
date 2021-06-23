@@ -4,11 +4,18 @@
 \alias{install}
 \title{Install the CLI}
 \usage{
-install()
+install(path = "/usr/local/bin/curatedMetagenomicData")
+}
+\arguments{
+\item{path}{A string representing the installation path}
 }
 \value{
 
 }
 \description{
-Install the CLI
+Install the CLI along the default path or a custom path.
+}
+\details{
+If not installing along a \code{bin} path, you must add the path to $PATH. For
+example, \verb{export PATH=/path/to/my/cli:$PATH}.
 }
