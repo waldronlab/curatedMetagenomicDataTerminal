@@ -67,7 +67,7 @@ if(input$list){
 }
 
 requested.datasets <- input$NAME
-all.datasets <- curatedMetagenomicData(pattern = ".*", dryrun = TRUE, print = FALSE, counts = FALSE)
+all.datasets <- curatedMetagenomicData(pattern = ".*", dryrun = TRUE, counts = FALSE)
 
 regex <- paste(glob2rx(requested.datasets), collapse="|")
 matched.datasets <- grep(regex, all.datasets, value=TRUE)
@@ -84,9 +84,9 @@ for (i in seq_along(matched.datasets)){
   message(paste0("Working on ", matched.datasets[i]))
 
   if(input$counts){
-    se <- curatedMetagenomicData(pattern = matched.datasets[i], dryrun = FALSE, print = FALSE, counts = TRUE)
+    se <- curatedMetagenomicData(pattern = matched.datasets[i], dryrun = FALSE, counts = TRUE)
   }else{
-    se <- curatedMetagenomicData(pattern = matched.datasets[i], dryrun = FALSE, print = FALSE, counts = FALSE)
+    se <- curatedMetagenomicData(pattern = matched.datasets[i], dryrun = FALSE, counts = FALSE)
   }
 
   edat <- assay(se)
