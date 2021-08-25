@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [[ -z $(command -v Rscript) ]]; then
+  printf "R is required; visit https://cran.r-project.org/ for installation instructions.\n"
+else
+  Rscript -e 'utils::install.packages("BiocManager", repos = "https://cloud.r-project.org/")'
+  Rscript -e 'BiocManager::install("waldronlab/curatedMetagenomicDataTerminal")'
+  Rscript -e 'curatedMetagenomicDataTerminal::install()'
+fi

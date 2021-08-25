@@ -1,97 +1,112 @@
 #!/usr/bin/env -S Rscript --vanilla
 
-required.packages <- c("docopt", "curatedMetagenomicData", "SummarizedExperiment")
-for (pkg in required.packages){
-  if(!suppressPackageStartupMessages(require(pkg, character.only=TRUE))){
-    stop(paste0("Make sure Bioconductor is installed (www.bioconductor.org/install), then type:\n
-                BiocManager::install(\"", pkg, "\") \n
-                from your R prompt."))
-  }
-}
+doc <-
+    base::as.character(
+"
+curatedMetagenomicData - Curated Metagenomic Data of the Human Microbiome
 
-doc <- "curatedMetagenomicData: command-line access to the curatedMetagenomicData R/Bioconductor package
+The curatedMetagenomicData command-line interface provides standardized, curated
+human microbiome data for novel analyses. It includes gene families, marker
+abundance, marker presence, pathway abundance, pathway coverage, and relative
+abundance for samples collected from different body sites. The bacterial,
+fungal, and archaeal taxonomic abundances for each sample were calculated with
+MetaPhlAn3, and metabolic functional potential was calculated with HUMAnN3. The
+manually curated sample metadata and standardized metagenomic data are available
+through this command-line interface.
 
 Usage:
-  curatedMetagenomicData [--metadata] [--counts] [--dryrun] [<NAME>]...
-  curatedMetagenomicData [-mcd] [<NAME>]...
-  curatedMetagenomicData -l | --list
-  curatedMetagenomicData -h | --help
+    curatedMetagenomicData <pattern>
+    curatedMetagenomicData <pattern> --dryrun
+    curatedMetagenomicData <pattern> --counts
+    curatedMetagenomicData <pattern> --metadata
+
+Arguments:
+    <pattern> a regular expression pattern to look for in the titles of
+              resources available in curatedMetagenomicData; \".\" will return all
 
 Options:
-  -h --help      Show this. Note that arguments may optionally be quoted.
-  -m --metadata     Include metadata in the first rows of the tsv file. This
-includes participant data such as age, sex, and disease status, and the number
-of sequencing reads. See explanations of metadata rows at
-https://github.com/waldronlab/curatedMetagenomicDataCuration/blob/master/inst/extdata/template.csv.
-  -c --counts    Multiply MetaPhlAn3 and HUMAnN3 relative abundances by read
-depth, then round to the nearest integer. If it is not set, return MetaPhlAn3
-and HUMAnN3 results as-is.
-  -d --dryrun    Show which datasets would be downloaded, then exit normally
-without downloading.
-  -l --list      List all datasets available then exit.
-  <NAME>...      One or more names curatedMetagenomicData datasets (See
-reference manual for list of all datasets). Standard Unix globbing is
-supported (such as * for wildcard), however in this case NAME argument
-MUST BE QUOTED.
+    --dryrun    return only names of resources
+    --counts    return taxa abundances as counts
+    --metadata  return only subject metadata
 
-The script will produce one tab-separated tsv file per dataset requested.
-The output files are the name of the dataset name with '.tsv' appended.
+Return Value:
+    A table of tab-seperated values will be sent to stdout. Where multiple
+    studies of the same data type are requested, they will be merged into a
+    single table. Where the metadata option (--metadata) is specified, the
+    returned table will contain only metadata.
 
 Examples:
-  curatedMetagenomicData -m -c 2021-03-31.LomanNJ_2013.relative_abundance
+    To return the names of all resources matching \"AsnicarF_20.+\", the following
+    command is used and will return all data types for both \"AsnicarF\" studies.
 
-Will produce a file 2021-03-31.LomanNJ_2013.relative_abundance.tsv providing MetaPhlAn3
-taxonomic abundance multiplied by read depth, with metadata about study
-participants and sequencing information in the first several rows of the file.
+        # curatedMetagenomicData \"AsnicarF_20.+\" --dryrun
 
-  curatedMetagenomicData 2021-03-31.LomanNJ_2013.relative_abundance 2021-03-31.LomanNJ_2013.pathway_coverage
+    To return the relative abundance table for the \"AsnicarF_2017\" study, the
+    following command is used and will return a tab-seperated table to stdout.
 
-Will return two files, without clinical / sequencing metadata.
+        # curatedMetagenomicData \"AsnicarF_2017.relative_abundance\"
 
-  curatedMetagenomicData -d \"*\"                 #Will show all available datasets (don't download)
-  curatedMetagenomicData -d \"*HMP*\"              #Will show all HMP data products (don't download)
-  curatedMetagenomicData -d \"*HMP*relative_abundance\"   #Will show all HMP relative abundance data products (don't download)
-  curatedMetagenomicData -d \"*HMP*\" \"*Loman*\"   #Will show all HMP and Loman data products (don't download)
-  curatedMetagenomicData -d \"*relative_abundance*\"  #Will show all relative abundance tables (don't download)
+    To return a relative abundance table for both \"AsnicarF\" studies converted
+    to read counts (i.e. relative abundance * read depth), the following command
+    is used and will return a tab-seperated table to stdout.
 
-Output: The file names of datasets to be created are returned to standard output.
+        # curatedMetagenomicData \"AsnicarF_20.+.relative_abundance\" --counts
+
+    To return a table containing only metadata for both \"AsnicarF\" studies, the
+    metadata option (--metadata) is specified and will return a tab-seperated
+    table to stdout.
+
+        # curatedMetagenomicData \"AsnicarF_20.+.relative_abundance\" --metadata
+
 "
+    )
 
-input <- docopt(doc)
-if(length(input$NAME) == 0 & !input$list)
-  docopt(doc, args="-h")
+input <-
+    try(docopt::docopt(doc, help = FALSE), silent = TRUE)
 
-if(input$list){
-  input$NAME <- "*"
-  input$dryrun <- TRUE
+if (base::inherits(input, "try-error")) {
+    base::cat(doc)
+
+    base::quit()
 }
 
-requested.datasets <- input$NAME
-all.datasets <- curatedMetagenomicData(pattern = ".*", dryrun = TRUE, counts = FALSE)
+if (input[["dryrun"]]) {
+    curatedMetagenomicData::curatedMetagenomicData(input[["pattern"]])
 
-regex <- paste(glob2rx(requested.datasets), collapse="|")
-matched.datasets <- grep(regex, all.datasets, value=TRUE)
-
-message("Datasets to be downloaded:")
-cat(paste0(matched.datasets, ".tsv\n"), file=stdout())
-
-if(!any(matched.datasets %in% all.datasets))
-  stop("NAME arguments do not match any available datasets.")
-
-for (i in seq_along(matched.datasets)){
-  if(input$dryrun) break
-
-  message(paste0("Working on ", matched.datasets[i]))
-
-  se <- curatedMetagenomicData(pattern = matched.datasets[i], dryrun = FALSE, counts = input$counts)[[1]]
-
-  edat <- assay(se)
-
-  if(input$metadata){
-    cdat <- t(as.matrix(colData(se)))
-    edat <- rbind(cdat, edat)
-  }
-
-  write.table(edat, file = paste0(matched.datasets[i], ".tsv"),
-              col.names=NA, sep = "\t", quote = FALSE)
+    base::quit()
 }
+
+if (input[["pattern"]] == ".") {
+    if (input[["metadata"]]) {
+        curatedMetagenomicData::sampleMetadata |>
+            readr::write_tsv(base::stdout())
+
+        base::quit()
+    }
+}
+
+output <-
+    base::suppressMessages(
+        curatedMetagenomicData::curatedMetagenomicData(
+            input[["pattern"]],
+            dryrun = input[["dryrun"]],
+            counts = input[["counts"]]
+        )
+    ) |>
+    curatedMetagenomicData::mergeData()
+
+if (input[["metadata"]]) {
+    output |>
+        SummarizedExperiment::colData() |>
+        base::as.data.frame() |>
+        tibble::rownames_to_column(var = "sample_id") |>
+        readr::write_tsv(base::stdout())
+
+    base::quit()
+}
+
+output |>
+    SummarizedExperiment::assay() |>
+    base::as.data.frame() |>
+    tibble::rownames_to_column() |>
+    readr::write_tsv(base::stdout())
