@@ -79,6 +79,7 @@ if (input[["dryrun"]]) {
 if (input[["pattern"]] == ".") {
     if (input[["metadata"]]) {
         curatedMetagenomicData::sampleMetadata |>
+            purrr::map_df(base::format, trim = TRUE, justify = "none", scientific = FALSE) |>
             readr::write_tsv(base::stdout())
 
         base::quit()
@@ -95,18 +96,25 @@ output <-
     ) |>
     curatedMetagenomicData::mergeData()
 
+metadata <-
+    SummarizedExperiment::colData(output) |>
+    tibble::as_tibble(rownames = "sample_id") |>
+    purrr::map_df(base::format, trim = TRUE, justify = "none", scientific = FALSE)
+
 if (input[["metadata"]]) {
-    output |>
-        SummarizedExperiment::colData() |>
-        base::as.data.frame() |>
-        tibble::rownames_to_column(var = "sample_id") |>
-        readr::write_tsv(base::stdout())
+    readr::write_tsv(metadata, base::stdout())
 
     base::quit()
 }
 
+future::plan(future::multisession)
+
 output |>
     SummarizedExperiment::assay() |>
-    base::as.data.frame() |>
-    tibble::rownames_to_column() |>
+    base::as.matrix() |>
+    base::t.default() |>
+    tibble::as_tibble() |>
+    furrr::future_map_dfc(base::format, trim = TRUE, justify = "none", scientific = FALSE) |>
+    purrr::prepend(metadata) |>
+    tibble::as_tibble() |>
     readr::write_tsv(base::stdout())

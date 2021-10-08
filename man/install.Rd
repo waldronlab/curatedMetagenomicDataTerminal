@@ -8,7 +8,7 @@ install(linked_file = "/usr/local/bin/curatedMetagenomicData")
 }
 \arguments{
 \item{linked_file}{the path to the linked file that will be created,
-(\code{"/usr/local/bin/curatedMetagenomicData"}) by default}
+\code{"/usr/local/bin/curatedMetagenomicData"} by default}
 }
 \value{
 the exit status of the system command, invisibly

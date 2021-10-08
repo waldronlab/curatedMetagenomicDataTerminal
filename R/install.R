@@ -7,7 +7,7 @@
 #' Windows, but get in touch if you need it to.
 #'
 #' @param linked_file the path to the linked file that will be created,
-#' (`"/usr/local/bin/curatedMetagenomicData"`) by default
+#' `"/usr/local/bin/curatedMetagenomicData"` by default
 #'
 #' @return the exit status of the system command, invisibly
 #' @export
@@ -20,6 +20,6 @@ install <- function(linked_file = "/usr/local/bin/curatedMetagenomicData") {
     source_file <-
         base::system.file("exec/curatedMetagenomicData", package = "curatedMetagenomicDataTerminal")
 
-    base::paste("ln -s", source_file, linked_file) |>
+    base::paste("ln -fs", source_file, linked_file) |>
         base::system()
 }
