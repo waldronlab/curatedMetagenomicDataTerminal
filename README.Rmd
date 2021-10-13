@@ -21,10 +21,10 @@ The curatedMetagenomicData command-line interface, curatedMetagenomicDataTermina
 
 ### Easier Way
 
-The easier way pipes the results of `curl` to `bash`, and that is always met with some controversy. If you don't like it, don't do it; the harder way is right there for you and is identical to the easier way, only it doesn't check for R first. Follow the link to the install script (https://bit.ly/cMDTerminal) if you need to prove this to yourself before executing the one line install.
+The easier way pipes the results of `curl` to `bash`, and that is always met with some controversy. If you don't like it, don't do it; the harder way is right there for you and is identical to the easier way, only it doesn't check for R first. Follow the link to the install script (https://tinyurl.com/cMDTerminal) if you need to prove this to yourself before executing the one line install.
 
 ```{sh, eval = FALSE}
-curl -sSL https://bit.ly/cMDTerminal | bash
+curl -sSL https://tinyurl.com/cMDTerminal | bash
 ```
 
 ### Harder Way
