@@ -1,2 +1,5 @@
-^curatedMetagenomicDataCLI\.Rproj$
+^LICENSE$
+^README\.Rmd$
+^curatedMetagenomicDataTerminal\.Rproj$
+^CODE_OF_CONDUCT\.md$
 ^\.Rproj\.user$

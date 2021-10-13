@@ -1,27 +1,25 @@
-#' Install the CLI
+#' Symlink the curatedMetagenomicData Command-Line Interface
 #'
-#' Install the CLI along the default path or a custom path.
+#' The command-line interface is an executable R script that lives in the
+#' curatedMetagenomicDataTerminal package. It must be symlinked to a location on
+#' your `$PATH` to be used from a terminal - the `install()` function does this
+#' by making use of the `ln` system command. So, this won't work if you have
+#' Windows, but get in touch if you need it to.
 #'
-#' If not installing along a `bin` path, you must add the path to $PATH. For
-#' example, `export PATH=/path/to/cli:$PATH`.
+#' @param linked_file the path to the linked file that will be created,
+#' `"/usr/local/bin/curatedMetagenomicData"` by default
 #'
-#' @param path A string representing the installation path
-#'
-#' @return
+#' @return the exit status of the system command, invisibly
 #' @export
 #'
 #' @examples
-#' curatedMetagenomicDataCLI::install()
-#' curatedMetagenomicDataCLI::install(".")
-install <- function(path = "/usr/local/bin/curatedMetagenomicData") {
+#' \dontrun{
+#' install()
+#' }
+install <- function(linked_file = "/usr/local/bin/curatedMetagenomicData") {
     source_file <-
-        system.file("exec/curatedMetagenomicData", package = "curatedMetagenomicDataCLI")
+        base::system.file("exec/curatedMetagenomicData", package = "curatedMetagenomicDataTerminal")
 
-    target_file <-
-        as.character(path)
-
-    system_link <-
-        paste("ln -s", source_file, target_file)
-
-    system(system_link)
+    base::paste("ln -fs", source_file, linked_file) |>
+        base::system()
 }

@@ -2,24 +2,26 @@
 % Please edit documentation in R/install.R
 \name{install}
 \alias{install}
-\title{Install the CLI}
+\title{Symlink the curatedMetagenomicData Command-Line Interface}
 \usage{
-install(path = "/usr/local/bin/curatedMetagenomicData")
+install(linked_file = "/usr/local/bin/curatedMetagenomicData")
 }
 \arguments{
-\item{path}{A string representing the installation path}
+\item{linked_file}{the path to the linked file that will be created,
+\code{"/usr/local/bin/curatedMetagenomicData"} by default}
 }
 \value{
-
+the exit status of the system command, invisibly
 }
 \description{
-Install the CLI along the default path or a custom path.
-}
-\details{
-If not installing along a \code{bin} path, you must add the path to $PATH. For
-example, \verb{export PATH=/path/to/cli:$PATH}.
+The command-line interface is an executable R script that lives in the
+curatedMetagenomicDataTerminal package. It must be symlinked to a location on
+your \verb{$PATH} to be used from a terminal - the \code{install()} function does this
+by making use of the \code{ln} system command. So, this won't work if you have
+Windows, but get in touch if you need it to.
 }
 \examples{
-curatedMetagenomicDataCLI::install()
-curatedMetagenomicDataCLI::install(".")
+\dontrun{
+install()
+}
 }
