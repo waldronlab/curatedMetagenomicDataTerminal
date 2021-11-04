@@ -36,16 +36,40 @@ Rscript -e 'utils::install.packages("BiocManager", repos = "https://cloud.r-proj
 Rscript -e 'BiocManager::install("waldronlab/curatedMetagenomicDataTerminal")'
 Rscript -e 'curatedMetagenomicDataTerminal::install()'
 ```
+### Windows Installation
+
+Installation on Windows is possible but requires a bit of work:
+
+1. Add R to your Path.
+    + Press the Windows key and type "path" then select "Edit the system environment variables."
+    + Under Advanced, select "Environment Variables..." toward the bottom.
+    + The lower half of the screen should be "System variables." Select Path and then select "Edit..."
+    + Select New then enter the path to your R installation bin folder (typically C:\Program Files\R\R-<Version>\bin).
+    
+2. Ensure that it was added to your Path by opening Command Prompt or Powershell and running `Rscript --version`.
+
+3. Run these lines. Note that the position of the single and double quotes have been reversed from the same code block above. This will not work on Windows otherwise.
+```{sh, eval = FALSE}
+Rscript -e "utils::install.packages('BiocManager', repos = 'https://cloud.r-project.org/')"
+Rscript -e "BiocManager::install('waldronlab/curatedMetagenomicDataTerminal')"
+```
+
+4. Create a symbolic link to the curatedMetagenomicData script to do this run the following line of code in a Powershell window with elevated privileges (to run Powershell with elevated privileges, right click and choose "Run as Administrator").
+```{sh, eval = FALSE}
+New-Item -ItemType SymbolicLink "curatedMetagenomicData" -Target "<path to R library>/curatedMetagenomicDataTerminal/exec/curatedMetagenomicData"
+```
+
+5. Check to make sure everything is setup correctly by running this line in Powershell:
+```{sh, eval = FALSE}
+Rscript curatedMetagenomicData --help
+```
+
 
 ## Introduction
 
 ```{bash, comment = "", echo = FALSE}
 ./exec/curatedMetagenomicData --help
 ```
-
-## But, Windows
-
-Do you have Windows and want to use curatedMetagenomicDataTerminal? It won't work for you at the moment, but if you insist, and are willing to accept the duty of testing, we can work together to make it possible. Get in touch and we'll discuss.
 
 ## Code of Conduct
 
