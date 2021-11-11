@@ -56,6 +56,11 @@ Rscript -e 'BiocManager::install("waldronlab/curatedMetagenomicDataTerminal")'
 Rscript -e 'curatedMetagenomicDataTerminal::install()'
 ```
 
+### MS Windows
+
+Do you have Windows and want to use curatedMetagenomicDataTerminal? The
+steps above won’t work for you, see [WINDOWS.md](WINDOWS.md) instead.
+
 ## Introduction
 
 
@@ -113,13 +118,6 @@ Rscript -e 'curatedMetagenomicDataTerminal::install()'
         table to stdout.
 
             # curatedMetagenomicData "AsnicarF_20.+.relative_abundance" --metadata
-
-## But, Windows
-
-Do you have Windows and want to use curatedMetagenomicDataTerminal? It
-won’t work for you at the moment, but if you insist, and are willing to
-accept the duty of testing, we can work together to make it possible.
-Get in touch and we’ll discuss.
 
 ## Code of Conduct
 
