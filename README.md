@@ -56,6 +56,18 @@ Rscript -e 'BiocManager::install("waldronlab/curatedMetagenomicDataTerminal")'
 Rscript -e 'curatedMetagenomicDataTerminal::install()'
 ```
 
+### Ubuntu 18.04.06 LTS "Bionic Beaver" or other distributions with Coreutils < 8.30
+
+`curatedMetagenomicDataTerminal` does not currently work in Ubuntu 18.04.06 LTS or other 
+GNU/Linux distributions that ship with Coreutils < 8.30 that do not support `#!/usr/bin/env -S`. 
+With older versions of Coreutils, the following happens:
+
+```
+~$ curatedMetagenomicData -h
+/usr/bin/env: invalid option -- 'S'
+Try '/usr/bin/env --help' for more information.
+```
+
 ### MS Windows
 
 Do you have Windows and want to use curatedMetagenomicDataTerminal? The
