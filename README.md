@@ -1,10 +1,8 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+[![DOI](https://zenodo.org/badge/360316682.svg)](https://doi.org/10.5281/zenodo.17498287)
+<!-- badges: end -->
 
 # curatedMetagenomicDataTerminal
-
-<!-- badges: start -->
-<!-- badges: end -->
 
 The curatedMetagenomicData command-line interface provides standardized,
 curated human microbiome data for novel analyses. It includes gene
